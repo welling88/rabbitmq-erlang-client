@@ -2,7 +2,7 @@
 
 set -ex
 
-apt-get install xsltproc
+apt-get install libxslt
 
 pushd rabbitmq-erlang-client
   make tests
