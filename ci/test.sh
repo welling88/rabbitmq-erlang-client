@@ -2,6 +2,7 @@
 
 set -ex
 
+apt-get update
 apt-get install libxslt
 
 pushd rabbitmq-erlang-client
