@@ -5,9 +5,12 @@ set -ex
 apt-get update
 apt-get install -y --no-install-recommends \
   debhelper \
+  erlang-dev \
+  erlang-src \
   python-simplejson \
   xmlto \
   xsltproc \
+  erlang-nox \
   zip \
   rsync
 
