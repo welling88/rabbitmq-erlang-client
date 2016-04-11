@@ -83,7 +83,7 @@ all() ->
     {hard_error_loop, [{repeat, 100}, parallel], [hard_error]}
   ]).
 -define(COMMON_NON_PARALLEL_TEST_CASES, [
-    basic_qos, %% Not parallel because it's time-based.
+    % basic_qos, %% Not parallel because it's time-based.
     connection_failure,
     channel_death
   ]).
