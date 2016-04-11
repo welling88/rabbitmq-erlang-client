@@ -3,7 +3,7 @@
 set -ex
 
 apt-get update
-apt-get install xsltproc rsync
+apt-get -y install xsltproc rsync
 
 pushd rabbitmq-erlang-client
   make tests
