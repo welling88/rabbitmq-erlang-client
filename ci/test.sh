@@ -6,6 +6,7 @@ apt-get update
 apt-get install -y --no-install-recommends \
   bash \
   debhelper \
+  erlang-nox \
   python-dev \
   python-simplejson \
   xmlto \
