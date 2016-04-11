@@ -3,18 +3,16 @@
 set -ex
 
 apt-get update
-apt-get install -y --no-install-recommends \
+apt-get install -y --fix-missing --no-install-recommends \
   bash \
   debhelper \
-  erlang-dev \
-  erlang-nox \
+  git \
   python-dev \
   python-simplejson \
+  rsync \
   xmlto \
   xsltproc \
-  zip \
-  rsync \
-  git
+  zip
 
 
 pushd rabbitmq-erlang-client
