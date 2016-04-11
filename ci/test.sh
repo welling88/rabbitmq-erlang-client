@@ -9,6 +9,7 @@ apt-get install -y --no-install-recommends \
   erlang \
   erlang-dev \
   erlang-src \
+  python-dev \
   python-simplejson \
   xmlto \
   xsltproc \
@@ -19,7 +20,5 @@ apt-get install -y --no-install-recommends \
 
 
 pushd rabbitmq-erlang-client
-  # make erlang-mk
-  #make dep_rabbit_common="cp ../rabbit_common" rabbitmq-components-mk
   make dep_rabbit_common="cp ../rabbit_common" tests
 popd
