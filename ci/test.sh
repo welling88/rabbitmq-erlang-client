@@ -21,5 +21,5 @@ apt-get install -y --no-install-recommends \
 pushd rabbitmq-erlang-client
   # make erlang-mk
   # make rabbitmq-components-mk
-  make tests
+  make dep_rabbit_common="cp ../rabbit_common" tests
 popd
