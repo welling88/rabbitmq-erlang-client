@@ -6,6 +6,7 @@ apt-get update
 apt-get install -y --no-install-recommends \
   bash \
   debhelper \
+  erlang \
   erlang-dev \
   erlang-src \
   python-simplejson \
