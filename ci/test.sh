@@ -6,12 +6,12 @@ apt-get update
 apt-get install -y --no-install-recommends \
   bash \
   debhelper \
+  erlang-dev \
   erlang-nox \
   python-dev \
   python-simplejson \
   xmlto \
   xsltproc \
-  erlang-nox \
   zip \
   rsync \
   git
