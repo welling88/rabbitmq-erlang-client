@@ -16,5 +16,6 @@ apt-get install -y --no-install-recommends \
 
 
 pushd rabbitmq-erlang-client
+  make rabbitmq-components-mk
   make tests
 popd
