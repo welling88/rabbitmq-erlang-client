@@ -12,7 +12,8 @@ apt-get install -y --no-install-recommends \
   xsltproc \
   erlang-nox \
   zip \
-  rsync
+  rsync \
+  git
 
 
 pushd rabbitmq-erlang-client
