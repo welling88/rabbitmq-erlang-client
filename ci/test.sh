@@ -5,7 +5,7 @@ set -ex
 apt-get update
 apt-get install -y --no-install-recommends \
   debhelper \
-  python-simple-json \
+  python-simplejson \
   xmlto \
   xsltproc \
   zip \
