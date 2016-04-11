@@ -4,6 +4,7 @@ set -ex
 
 apt-get update
 apt-get install -y --no-install-recommends \
+  bash \
   debhelper \
   erlang-dev \
   erlang-src \
