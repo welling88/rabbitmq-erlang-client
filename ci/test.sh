@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
 set -ex
 
-pushd rabbitmq-erlang-client
-  echo "make some noise"
+(
+  cd rabbitmq-erlang-client
   make dep_rabbit_common="cp ../rabbit_common" tests
-popd
+)
