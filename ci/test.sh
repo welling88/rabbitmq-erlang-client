@@ -3,6 +3,6 @@
 set -ex
 
 (
-  cd rabbitmq-erlang-client
-  make dep_rabbit_common="cp ../rabbit_common" tests
+  cd amqp_client
+  make DEPS_DIR="$PWD/.." tests
 )
