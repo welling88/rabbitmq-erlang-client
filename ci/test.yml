@@ -1,6 +1,7 @@
 ---
 platform: linux
 inputs:
+- name: rabbit_codegen
 - name: amqp_client
 - name: rabbit_common
 - name: rabbit
