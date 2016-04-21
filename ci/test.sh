@@ -4,5 +4,5 @@ set -ex
 
 (
   cd amqp_client
-  make DEPS_DIR="$PWD/.." tests
+  make V=2 DEPS_DIR="$PWD/.." tests
 )
