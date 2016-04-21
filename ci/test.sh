@@ -16,5 +16,5 @@ ls -l
 
 (
   cd "$SRC_DIR"
-  $MAKE dep_ranch="cp /" V=2 DEPS_DIR="$DEPS_DIR" tests
+  $MAKE dep_ranch="cp /ranch" V=2 DEPS_DIR="$DEPS_DIR" tests
 )
