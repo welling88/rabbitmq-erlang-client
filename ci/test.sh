@@ -12,6 +12,8 @@ FreeBSD) MAKE=gmake ;;
 *)       MAKE=make ;;
 esac
 
+ls -l
+
 (
   cd "$SRC_DIR"
   $MAKE V=2 DEPS_DIR="$DEPS_DIR" tests
