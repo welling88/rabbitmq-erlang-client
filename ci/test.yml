@@ -2,7 +2,8 @@
 platform: linux
 inputs:
 - name: rabbitmq_codegen
-- name: amqp_client
+- name: amqp_client_stable
+  path: amqp_client
 - name: rabbit_common
 image_resource:
   type: docker-image
