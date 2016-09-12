@@ -35,7 +35,7 @@ all() ->
 
 amqp_uri_parsing(_Config) ->
     %% From the spec (adapted)
-    ?assertMatch({ok, #amqp_params_network{username     = <<"user">>,
+    ?assertMatch({willnotmatch, #amqp_params_network{username     = <<"user">>,
                                            password     = <<"pass">>,
                                            host         = "host",
                                            port         = 10000,
