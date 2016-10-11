@@ -82,6 +82,8 @@
 
 -define(TIMEOUT_FLUSH, 60000).
 
+-define(MORE_CONSUMER_CREDIT_AFTER, 50).
+
 -record(state, {number,
                 connection,
                 consumer,
@@ -100,13 +102,12 @@
                 waiting_set        = gb_trees:empty(),
                 only_acks_received = true,
 
-                %% true | false, only relevant in the direct
-                %% client case.
-                %% when true, consumers will manually notify
-                %% queue pids using rabbit_amqqueue:notify_sent/2
-                %% to prevent the queue from overwhelming slow
-                %% consumers that use automatic acknowledgement
-                %% mode.
+                %% true | false, only relevant in the direct client
+                %% case.
+                %% When true, consumers will manually notify queue
+                %% pids using notify_sent/2 to prevent the queue from
+                %% overwhelming slow consumers that use automatic
+                %% acknowledgement mode.
                 delivery_flow_control = false
                }).
 
@@ -425,7 +426,7 @@ handle_cast(enable_delivery_flow_control, State) ->
     {noreply, State#state{delivery_flow_control = true}};
 %% @private
 handle_cast({send_notify, {QPid, ChPid}}, State) ->
-    rabbit_amqqueue:notify_sent(QPid, ChPid),
+    notify_sent(QPid, ChPid),
     {noreply, State};
 %% @private
 handle_cast({cast, Method, AmqpMsg, Sender, noflow}, State) ->
@@ -489,7 +490,7 @@ handle_info({send_command_and_notify, QPid, ChPid,
             State = #state{delivery_flow_control = MFC}) ->
     case MFC of
         false -> handle_method_from_server(Method, Content, State),
-                 rabbit_amqqueue:notify_sent(QPid, ChPid);
+                 notify_sent(QPid, ChPid);
         true  -> handle_method_from_server(Method, Content,
                                            {self(), QPid, ChPid}, State)
     end,
@@ -530,7 +531,7 @@ handle_info({'DOWN', _, process, FlowHandler, Reason},
               "Reason: ~p~n", [self(), FlowHandler, Reason]),
     {noreply, State#state{flow_handler = none}};
 handle_info({'DOWN', _, process, QPid, _Reason}, State) ->
-    rabbit_amqqueue:notify_sent_queue_down(QPid),
+    notify_sent_queue_down(QPid),
     {noreply, State};
 handle_info({confirm_timeout, From}, State = #state{waiting_set = WSet}) ->
     case gb_trees:lookup(From, WSet) of
@@ -984,3 +985,29 @@ call_to_consumer(Method, Args, DeliveryCtx, #state{consumer = Consumer}) ->
 
 safe_cancel_timer(undefined) -> ok;
 safe_cancel_timer(TRef)      -> erlang:cancel_timer(TRef).
+
+%% These two functions communicates directly with the Erlang process
+%% running on the broker for that queue. They also manage credit flow
+%% between the client channel process and the queue process. Therefore,
+%% they only make sense for direct connections, not TCP connections.
+
+-spec notify_sent(pid(), pid()) -> 'ok'.
+
+notify_sent(QPid, ChPid) ->
+    Key = {consumer_credit_to, QPid},
+    put(Key, case get(Key) of
+                 1         -> gen_server2:cast(
+                                QPid, {notify_sent, ChPid,
+                                       ?MORE_CONSUMER_CREDIT_AFTER}),
+                              ?MORE_CONSUMER_CREDIT_AFTER;
+                 undefined -> erlang:monitor(process, QPid),
+                              ?MORE_CONSUMER_CREDIT_AFTER - 1;
+                 C         -> C - 1
+             end),
+    ok.
+
+-spec notify_sent_queue_down(pid()) -> 'ok'.
+
+notify_sent_queue_down(QPid) ->
+    erase({consumer_credit_to, QPid}),
+    ok.
